@@ -108,30 +108,58 @@ function draw289_4() {
 
 function draw340() {
 
-    const width = 30
-    const height = 45
+    function closeShape(data){
+        console.log(data)
+        return d3.line().x(d=>d[0]).y(d=>d[1])//.curve(d3.curveLinearClosed())
+
+    }
+
+    const width = "30%"
+    const height = "45%"
     const data = [
-        {"class": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f"},
-        {"class": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00"},
-        {"class": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0"},
-        {"class": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0"},
-        {"class": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f"},
-        {"class": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00"}
+        {"class": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f", "shape": "circle", "sh_data": new Object({'cx': 0, 'cy':0, 'r':100})},
+        {"class": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00", "shape": "rect", "sh_data": new Object({'x':0,'y':0,'width':100,'height':100})}, //square
+        {"class": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0", "shape": "path", "sh_data": new Object({'d': closeShape([[50,0],[100,100],[0,100],[50,0]])})},//trian
+        {"class": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0", "shape": "path"},//rect
+        {"class": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f", "shape": "path"},//trap
+        {"class": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00", "shape": "path"}//parall
     ]
 
     let w = d3.select('#wall')
     	.selectAll('div')
     	.data(data).enter()
     	.append('div')
-    		.attr('class', function (d) { return d.class; })
     		.style('position','absolute')
     		.style('top', function (d) { return d.top; })
     		.style('left', function (d) { return d.left; })
-    		.style('width', width + "%")
-    		.style('height', height + "%")
+    		.style('width', width)
+    		.style('height', height)
     		.style('background-color', function (d) { return d.bgcolor; })
+        .append('svg')
+            .attr('class', function (d) { return d.class; })
+            .style("width", "100%")
+            .style("height", "100%")
 
-    
+    w.selectAll('line')
+        .data([...Array(100).keys()]).enter()
+        .append("line")
+        .attr("x1", 0)
+        .attr("y1", d=>10*d)
+        .attr("x2", function() {return d3.select(this.parentNode).node().getBoundingClientRect().width } )
+        .attr("y2", d=>10*d)
+        .style("stroke", function() {return d3.select(this.parentNode).datum().hcolor} )
+ 
+    w.each(function(p,j) {
+        let svgBBox = d3.select(this).node().getBoundingClientRect()
+        d3.select(this).selectAll("path")
+            .data([1]).enter()
+            .append(p.shape)
+            .attrs(p.sh_data)
+            .style("fill", function() {return d3.select(this.parentNode).datum().hcolor} )
+            .style("stroke-width", "5px")
+        })
+
+        
 }
 
 //draw130();
