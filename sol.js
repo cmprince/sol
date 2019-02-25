@@ -3,9 +3,6 @@
 // 
 
 // Create an svg canvas on the "wall"
-const svg = d3.select("#wall").append("svg")
-      .style("width", "100%")
-      .style("height", "100%")
 
 // Obtain dimensions of the wall and calculate its centerpoint
 const wallBBox = wall.getBoundingClientRect()
@@ -15,6 +12,9 @@ function draw130() {
     // Wall Drawing 130
     // "Grid and arcs from four corners"
     //
+    const svg = d3.select("#wall").append("svg")
+          .style("width", "100%")
+          .style("height", "100%")
 
     const radii = [...Array(200).keys()]
     const spacing = 20
@@ -50,7 +50,10 @@ function draw289_4() {
     // (Detail: 4th wall only)
 
     //black wall
-    svg.style("background-color", "#000")
+    const svg = d3.select("#wall").append("svg")
+          .style("width", "100%")
+          .style("height", "100%")
+          .style("background-color", "#000")
 
     // 24 lines from center
     let rays = [...Array(24).keys()]
@@ -103,5 +106,34 @@ function draw289_4() {
                 .style("stroke-width", "1.5px")}
 }
 
+function draw340() {
+
+    const width = 30
+    const height = 45
+    const data = [
+        {"class": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f"},
+        {"class": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00"},
+        {"class": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0"},
+        {"class": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0"},
+        {"class": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f"},
+        {"class": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00"}
+    ]
+
+    let w = d3.select('#wall')
+    	.selectAll('div')
+    	.data(data).enter()
+    	.append('div')
+    		.attr('class', function (d) { return d.class; })
+    		.style('position','absolute')
+    		.style('top', function (d) { return d.top; })
+    		.style('left', function (d) { return d.left; })
+    		.style('width', width + "%")
+    		.style('height', height + "%")
+    		.style('background-color', function (d) { return d.bgcolor; })
+
+    
+}
+
 //draw130();
-draw289_4();
+//draw289_4();
+draw340();
