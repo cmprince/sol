@@ -13,8 +13,8 @@ function draw130() {
     // "Grid and arcs from four corners"
     //
     const svg = d3.select("#wall").append("svg")
-          .style("width", "100%")
-          .style("height", "100%")
+        .style("width", "100%")
+        .style("height", "100%")
 
     const radii = [...Array(200).keys()]
     const spacing = 20
@@ -25,17 +25,17 @@ function draw130() {
             .selectAll("circle")
             .data(radii)
             .enter()
-                .append("circle")
-                .attr("r", d => spacing*d)
-                .attr("cx", i == 0 ? center.x - offWall 
-                            : i < 4 ? center.x 
-                            : center.x + offWall) 
-                .attr("cy", i%2 == 0 ? center.y 
-                            : i == 1 ? center.y - offWall
-                            : center.y + offWall)
-                .style("stroke", "#000")
-                .style("stroke-width", d => (0.1 + 0.1*Math.random())+"px")
-                .style("fill", "none")
+            .append("circle")
+            .attr("r", d => spacing*d)
+            .attr("cx", i == 0 ? center.x - offWall 
+                : i < 4 ? center.x 
+                : center.x + offWall) 
+            .attr("cy", i%2 == 0 ? center.y 
+                : i == 1 ? center.y - offWall
+                : center.y + offWall)
+            .style("stroke", "#000")
+            .style("stroke-width", d => (0.1 + 0.1*Math.random())+"px")
+            .style("fill", "none")
     }
 }
 
@@ -51,28 +51,28 @@ function draw289_4() {
 
     //black wall
     const svg = d3.select("#wall").append("svg")
-          .style("width", "100%")
-          .style("height", "100%")
-          .style("background-color", "#000")
+        .style("width", "100%")
+        .style("height", "100%")
+        .style("background-color", "#000")
 
     // 24 lines from center
     let rays = [...Array(24).keys()]
     let map = rays.map(ang => new Object(
         {a: (Math.PI/180) * (15*ang + 12*Math.random()), 
-         l: 200 + 700*Math.random()}))
+            l: 200 + 700*Math.random()}))
 
     d3.select("svg").append("g")
         .attr("transform", "translate(" + center.x +"," + center.y +")")
         .selectAll("line")
         .data(map)
         .enter()
-            .append("line")
-            .attr("x1", 0) 
-            .attr("y1", 0)
-            .attr("x2", d=> 30* ~~((d.l * Math.cos(d.a))/30) )
-            .attr("y2", d=> 30* ~~((d.l * Math.sin(d.a))/30) )
-            .style("stroke", "#fff")
-            .style("stroke-width", "1.5px")
+        .append("line")
+        .attr("x1", 0) 
+        .attr("y1", 0)
+        .attr("x2", d=> 30* ~~((d.l * Math.cos(d.a))/30) )
+        .attr("y2", d=> 30* ~~((d.l * Math.sin(d.a))/30) )
+        .style("stroke", "#fff")
+        .style("stroke-width", "1.5px")
 
     // 12 lines from each midpoint and corner
     const points = [
@@ -90,20 +90,20 @@ function draw289_4() {
         rays = [...Array(12).keys()]
         map = rays.map(ang => new Object(
             {a: (Math.PI/180) * (7.5*(i%2 + 1)*ang + 6*(i%2 + 1)*Math.random()), 
-             l: 200 + 700*Math.random()}))
+                l: 200 + 700*Math.random()}))
 
         d3.select("svg").append("g")
             .attr("transform", "translate(" + points[i][0] +"," + points[i][1] +") rotate(" + orients[i]+ ")")
             .selectAll("line")
             .data(map)
             .enter()
-                .append("line")
-                .attr("x1", 0) 
-                .attr("y1", 0)
-                .attr("x2", d=> 30* ~~((d.l * Math.cos(d.a))/30) )
-                .attr("y2", d=> 30* ~~((d.l * Math.sin(d.a))/30) )
-                .style("stroke", "#fff")
-                .style("stroke-width", "1.5px")}
+            .append("line")
+            .attr("x1", 0) 
+            .attr("y1", 0)
+            .attr("x2", d=> 30* ~~((d.l * Math.cos(d.a))/30) )
+            .attr("y2", d=> 30* ~~((d.l * Math.sin(d.a))/30) )
+            .style("stroke", "#fff")
+            .style("stroke-width", "1.5px")}
 }
 
 function draw340() {
@@ -123,19 +123,19 @@ function draw340() {
     const gridspace = 7
 
     let w = d3.select('#wall')
-    	.selectAll('div')
-    	.data(data).enter()
-    	.append('div')
-    		.style('position','absolute')
-    		.style('top', function (d) { return d.top; })
-    		.style('left', function (d) { return d.left; })
-    		.style('width', divWidth)
-    		.style('height', divHeight)
-    		.style('background-color', function (d) { return d.bgcolor; })
+        .selectAll('div')
+        .data(data).enter()
+        .append('div')
+        .style('position','absolute')
+        .style('top', function (d) { return d.top; })
+        .style('left', function (d) { return d.left; })
+        .style('width', divWidth)
+        .style('height', divHeight)
+        .style('background-color', function (d) { return d.bgcolor; })
         .append('svg')
-            .attr('class', function (d) { return d.class; })
-            .style("width", "100%")
-            .style("height", "100%")
+        .attr('class', function (d) { return d.class; })
+        .style("width", "100%")
+        .style("height", "100%")
 
     w.each(function(p,j) {
         let svgBBox = d3.select(this).node().getBoundingClientRect()
@@ -153,27 +153,27 @@ function draw340() {
             .style("stroke", p.hcolor) 
         d3.select(this)
             .append("defs").append("clipPath")
-			.attr("id", "clip_" + p.class)
+            .attr("id", "clip_" + p.class)
             .append(p.shape)
             .attrs(p.sh_data)
-			.attr("transform", transformString)
+            .attr("transform", transformString)
         d3.select(this)
             .append(p.shape)
             .attrs(p.sh_data)
-			.attr("transform", transformString) 
+            .attr("transform", transformString) 
             .style("fill", p.bgcolor)
-		d3.select(this).append('g')
-			.attr("clip-path", "url(#clip_" + p.class + ")")
-			.selectAll('line')
-			.data([...Array(100).keys()]).enter()
-			.append('line')
-			.attr("x1", d=>gridspace*d)
-			.attr("y1", 0)
-			.attr("x2", d=>gridspace*d)
-			.attr("y2", h)
-			.style("stroke", p.vcolor)
+        d3.select(this).append('g')
+            .attr("clip-path", "url(#clip_" + p.class + ")")
+            .selectAll('line')
+            .data([...Array(100).keys()]).enter()
+            .append('line')
+            .attr("x1", d=>gridspace*d)
+            .attr("y1", 0)
+            .attr("x2", d=>gridspace*d)
+            .attr("y2", h)
+            .style("stroke", p.vcolor)
     })
-        
+
 }
 
 //draw130();
