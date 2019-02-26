@@ -113,47 +113,46 @@ function draw340() {
     const divWidth = "30%"
     const divHeight = "45%"
     const data = [
-        {"class": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f", "vcolor": "#ff0", "shape": "circle", "sh_data": new Object({'cx': 0, 'cy':0, 'r':50})},
-        {"class": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-50,'y':-50,'width':100,'height':100})}, //square
-        {"class": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[0,-50],[-50,50],[50,50]])})}, //triangle
-        {"class": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-25,'y':-50,'width':50,'height':100})}, //rectangle
-        {"class": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[25,-50],[50,50],[-50,50]])})}, //trapezoid
-        {"class": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00", "vcolor": "#ff0", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[50,-50],[25,50],[-50,50]])})} //parallelogram
+        {"position": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f", "vcolor": "#ff0", "shape": "circle", "sh_data": new Object({'cx': 0, 'cy':0, 'r':50})},
+        {"position": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-50,'y':-50,'width':100,'height':100})}, //square
+        {"position": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[0,-50],[-50,50],[50,50]])})}, //triangle
+        {"position": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-25,'y':-50,'width':50,'height':100})}, //rectangle
+        {"position": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[25,-50],[50,50],[-50,50]])})}, //trapezoid
+        {"position": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00", "vcolor": "#ff0", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[50,-50],[25,50],[-50,50]])})} //parallelogram
     ]
     const gridspace = 7
 
-    let w = d3.select('#wall')
+    let panels = d3.select('#wall')
         .selectAll('div')
         .data(data).enter()
         .append('div')
         .style('position','absolute')
-        .style('top', function (d) { return d.top; })
-        .style('left', function (d) { return d.left; })
+        .style('top', d => d.top)
+        .style('left', d => d.left)
         .style('width', divWidth)
         .style('height', divHeight)
-        .style('background-color', function (d) { return d.bgcolor; })
+        .style('background-color', d => d.bgcolor)
         .append('svg')
-        .attr('class', function (d) { return d.class; })
         .style("width", "100%")
         .style("height", "100%")
 
-    w.each(function(p,j) {
+    panels.each(function(p,j) {
         let svgBBox = d3.select(this).node().getBoundingClientRect()
         let h = svgBBox.height, w = svgBBox.width, scaleFactor = 0.9*Math.min(h, w)/100
         let transformString = "translate(" + w/2 + "," + h/2 + ")scale(" + scaleFactor + ")"
 
         d3.select(this).append('g')
             .selectAll('line')
-            .data([...Array(100).keys()]).enter()
+            .data([...Array((h/gridspace)|0 + 2).keys()]).enter()
             .append("line")
             .attr("x1", 0)
-            .attr("y1", d=>gridspace*d)
+            .attr("y1", d => gridspace*d)
             .attr("x2", w) 
-            .attr("y2", d=>gridspace*d)
+            .attr("y2", d => gridspace*d)
             .style("stroke", p.hcolor) 
         d3.select(this)
             .append("defs").append("clipPath")
-            .attr("id", "clip_" + p.class)
+            .attr("id", "clip_" + p.position)
             .append(p.shape)
             .attrs(p.sh_data)
             .attr("transform", transformString)
@@ -163,13 +162,13 @@ function draw340() {
             .attr("transform", transformString) 
             .style("fill", p.bgcolor)
         d3.select(this).append('g')
-            .attr("clip-path", "url(#clip_" + p.class + ")")
+            .attr("clip-path", "url(#clip_" + p.position + ")")
             .selectAll('line')
-            .data([...Array(100).keys()]).enter()
+            .data([...Array((w/gridspace)|0 + 2).keys()]).enter()
             .append('line')
-            .attr("x1", d=>gridspace*d)
+            .attr("x1", d => gridspace*d)
             .attr("y1", 0)
-            .attr("x2", d=>gridspace*d)
+            .attr("x2", d => gridspace*d)
             .attr("y2", h)
             .style("stroke", p.vcolor)
     })
