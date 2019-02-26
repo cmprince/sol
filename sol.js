@@ -120,6 +120,7 @@ function draw340() {
         {"class": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[25,-50],[50,50],[-50,50]])})},//trap
         {"class": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00", "vcolor": "#ff0", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[50,-50],[25,50],[-50,50]])})}//parall
     ]
+    const gridspace = 7
 
     let w = d3.select('#wall')
     	.selectAll('div')
@@ -140,9 +141,9 @@ function draw340() {
         .data([...Array(100).keys()]).enter()
         .append("line")
         .attr("x1", 0)
-        .attr("y1", d=>10*d)
+        .attr("y1", d=>gridspace*d)
         .attr("x2", function() {return d3.select(this.parentNode).node().getBoundingClientRect().width } )
-        .attr("y2", d=>10*d)
+        .attr("y2", d=>gridspace*d)
         .style("stroke", function() {return d3.select(this.parentNode).datum().hcolor} )
  
     w.each(function(p,j) {
@@ -165,9 +166,9 @@ function draw340() {
 			.selectAll('line')
 			.data([...Array(100).keys()]).enter()
 			.append('line')
-			.attr("x1", d=>10*d)
+			.attr("x1", d=>gridspace*d)
 			.attr("y1", 0)
-			.attr("x2", d=>10*d)
+			.attr("x2", d=>gridspace*d)
 			.attr("y2", h)
 			.style("stroke", p.vcolor)
         })
