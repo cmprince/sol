@@ -138,12 +138,12 @@ function draw340() {
 
     panels.each(function(p,j) {
         let svgBBox = d3.select(this).node().getBoundingClientRect()
-        let h = svgBBox.height, w = svgBBox.width, scaleFactor = 0.9*Math.min(h, w)/100
+        let h = svgBBox.height, w = svgBBox.width, scaleFactor = 0.85*Math.min(h, w)/100
         let transformString = "translate(" + w/2 + "," + h/2 + ")scale(" + scaleFactor + ")"
 
         d3.select(this).append('g')
             .selectAll('line')
-            .data([...Array((h/gridspace)|0 + 2).keys()]).enter()
+            .data([...Array((h/gridspace)|0 + 3).keys()]).enter()
             .append("line")
             .attr("x1", 0)
             .attr("y1", d => gridspace*d)
@@ -164,7 +164,7 @@ function draw340() {
         d3.select(this).append('g')
             .attr("clip-path", "url(#clip_" + p.position + ")")
             .selectAll('line')
-            .data([...Array((w/gridspace)|0 + 2).keys()]).enter()
+            .data([...Array((w/gridspace)|0 + 3).keys()]).enter()
             .append('line')
             .attr("x1", d => gridspace*d)
             .attr("y1", 0)
