@@ -2,11 +2,10 @@
 // Author: Chris Prince (@superdupercrispy)
 // 
 
-// Create an svg canvas on the "wall"
-
 // Obtain dimensions of the wall and calculate its centerpoint
 const wallBBox = wall.getBoundingClientRect()
 const center = new Object({x: wallBBox.width/2, y: wallBBox.height/2})
+const solColors = new Object({red: "#f00", yellow: "#ff0", blue: "#00f"})
 
 function draw130() {
     // Wall Drawing 130
@@ -113,14 +112,21 @@ function draw340() {
     const divWidth = "30%"
     const divHeight = "45%"
     const data = [
-        {"position": "topleft", "top": "3%", "left": "3%", "bgcolor": "#f00", "hcolor": "#00f", "vcolor": "#ff0", "shape": "circle", "sh_data": new Object({'cx': 0, 'cy':0, 'r':50})},
-        {"position": "topcent", "top": "3%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#f00", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-50,'y':-50,'width':100,'height':100})}, //square
-        {"position": "topright", "top": "3%", "left": "67%", "bgcolor": "#00f", "hcolor": "#ff0", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[0,-50],[-50,50],[50,50]])})}, //triangle
-        {"position": "bottomleft", "top": "52%", "left": "3%", "bgcolor": "#f00", "hcolor": "#ff0", "vcolor": "#00f", "shape": "rect", "sh_data": new Object({'x':-25,'y':-50,'width':50,'height':100})}, //rectangle
-        {"position": "bottomcent", "top": "52%", "left": "35%", "bgcolor": "#ff0", "hcolor": "#00f", "vcolor": "#f00", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[25,-50],[50,50],[-50,50]])})}, //trapezoid
-        {"position": "bottomright", "top": "52%", "left": "67%", "bgcolor": "#00f", "hcolor": "#f00", "vcolor": "#ff0", "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[50,-50],[25,50],[-50,50]])})} //parallelogram
+        {"position": "topleft", "top": "3%", "left": "3%", "bgcolor": solColors.red, "hcolor": solColors.blue, "vcolor": solColors.yellow, 
+            "shape": "circle", "sh_data": new Object({'cx': 0, 'cy':0, 'r':50})},
+        {"position": "topcenter", "top": "3%", "left": "35%", "bgcolor": solColors.yellow, "hcolor": solColors.red, "vcolor": solColors.blue, 
+            "shape": "rect", "sh_data": new Object({'x':-50,'y':-50,'width':100,'height':100})}, //square
+        {"position": "topright", "top": "3%", "left": "67%", "bgcolor": solColors.blue, "hcolor": solColors.yellow, "vcolor": solColors.red, 
+            "shape": "path", "sh_data": new Object({'d': closeShape([[0,-50],[-50,50],[50,50]])})}, //triangle
+        {"position": "bottomleft", "top": "52%", "left": "3%", "bgcolor": solColors.red, "hcolor": solColors.yellow, "vcolor": solColors.blue, 
+            "shape": "rect", "sh_data": new Object({'x':-25,'y':-50,'width':50,'height':100})}, //rectangle
+        {"position": "bottomcenter", "top": "52%", "left": "35%", "bgcolor": solColors.yellow, "hcolor": solColors.blue, "vcolor": solColors.red, 
+            "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[25,-50],[50,50],[-50,50]])})}, //trapezoid
+        {"position": "bottomright", "top": "52%", "left": "67%", "bgcolor": solColors.blue, "hcolor": solColors.red, "vcolor": solColors.yellow, 
+            "shape": "path", "sh_data": new Object({'d': closeShape([[-25,-50],[50,-50],[25,50],[-50,50]])})} //parallelogram
     ]
     const gridspace = 7
+    const gridfill = 0.2
 
     let panels = d3.select('#wall')
         .selectAll('div')
@@ -149,7 +155,8 @@ function draw340() {
             .attr("y1", d => gridspace*d)
             .attr("x2", w) 
             .attr("y2", d => gridspace*d)
-            .style("stroke", p.hcolor) 
+            .style("stroke", p.hcolor)
+            .style("stroke-width", gridfill*gridspace)
         d3.select(this)
             .append("defs").append("clipPath")
             .attr("id", "clip_" + p.position)
@@ -171,6 +178,7 @@ function draw340() {
             .attr("x2", d => gridspace*d)
             .attr("y2", h)
             .style("stroke", p.vcolor)
+            .style("stroke-width", gridfill*gridspace)
     })
 
 }
