@@ -7,6 +7,84 @@ const wallBBox = wall.getBoundingClientRect()
 const center = new Object({x: wallBBox.width/2, y: wallBBox.height/2})
 const solColors = new Object({red: "#f00", yellow: "#ff0", blue: "#00f"})
 
+function draw047() {
+
+    const svg = d3.select("#wall").append("svg")
+        .style("width", "100%")
+        .style("height", "100%")
+
+    const data = [[0,0,0,1], [0,0,1,0], [0,1,0,0], [1,0,0,0],
+                  [0,0,1,1], [0,1,0,1], [1,0,0,1], [0,1,1,0], [1,0,1,0], [1,1,0,0],
+                  [0,1,1,1], [1,0,1,1], [1,1,0,1], [1,1,1,0],
+                  [1,1,1,1]]
+    const panelWidth = wallBBox.width/15
+    const gridSpace = 3
+
+    const svgDefs = svg.append("defs")
+    svgDefs.append('g')
+        .attr("id", "hline")
+        .selectAll('line')
+        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .append('line')
+        .attr('x1', 0)
+        .attr('x2', wallBBox.width)
+        .attr('y1', d=>d*gridSpace)
+        .attr('y2', d=>d*gridSpace)
+    svgDefs.append('g')
+        .attr("id", "vline")
+        .selectAll('line')
+        .data([...Array((wallBBox.width/gridSpace)|0 + 10).keys()]).enter()
+        .append('line')
+        .attr('x1', d=>d*gridSpace)
+        .attr('x2', d=>d*gridSpace)
+        .attr('y1', 0)
+        .attr('y2', wallBBox.height)
+    svgDefs.append('g')
+        .attr("id", "uline")
+        .selectAll('line')
+        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .append('line')
+        .attr('x1', 0)
+        .attr('x2', d=>d*gridSpace*1.414)
+        .attr('y1', d=>d*gridSpace*1.414)
+        .attr('y2', 0)
+    svgDefs.append('g')
+        .attr("id", "dline")
+        .selectAll('line')
+        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .append('line')
+        .attr('x1', 0)
+        .attr('x2', panelWidth)
+        .attr('y1', d=>d*gridSpace*1.414-panelWidth)
+        .attr('y2', d=>d*gridSpace*1.414)
+
+    const orients = ["#dline", "#uline", "#vline", "#hline"]
+
+    for (i = 0; i<15; i++){
+        svgDefs.append("clipPath")
+            .attr("id", "clip_" + i)
+            .append('rect')
+            .attr('x', panelWidth * i)
+            .attr('y', 0)
+            .attr('width', panelWidth)
+            .attr('height', wallBBox.height)
+
+        let panelLines = data[i]
+
+        for (j=0; j<4; j++){
+            svg.append('g')
+                .attr("clip-path", "url(#clip_" + i +")")
+                .append("use")
+                .attr("xlink:href", orients[j])
+                .attr("transform", "translate(" + panelWidth*i + ")")
+                .style("stroke-width", panelLines[j]*0.3)
+                .style("stroke", "#000")
+        }
+    }
+
+}
+
+
 function draw130() {
     // Wall Drawing 130
     // "Grid and arcs from four corners"
@@ -183,6 +261,7 @@ function draw340() {
 
 }
 
+draw047();
 //draw130();
 //draw289_4();
-draw340();
+//draw340();
