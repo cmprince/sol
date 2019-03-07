@@ -24,7 +24,7 @@ function draw047() {
     svgDefs.append('g')
         .attr("id", "hline")
         .selectAll('line')
-        .data([...Array((wallBBox.height/gridSpace)|0 + 1).keys()]).enter()
+        .data([...Array((wallBBox.height/gridSpace)|0 + 3).keys()]).enter()
         .append('line')
         .attr('x1', 0)
         .attr('x2', panelWidth)
