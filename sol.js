@@ -13,6 +13,17 @@ function draw047() {
         .style("width", "100%")
         .style("height", "100%")
 
+    const svgFilter = svg.append("filter").attr("id", "myFilter").attr("filterRes", 5)
+    svgFilter.append("feTurbulence")
+        .attr("type", "fractalNoise")
+        .attr("baseFrequency", "0.05 0.01")
+        .attr("numOctaves", 1)
+        .attr("result", "noise")
+    svgFilter.append("feDisplacementMap")
+        .attr("in", "SourceGraphic")
+        .attr("in2", "noise")
+        .attr("scale",20)
+
     const data = [[0,0,0,1], [0,0,1,0], [0,1,0,0], [1,0,0,0],
                   [0,0,1,1], [0,1,0,1], [1,0,0,1], [0,1,1,0], [1,0,1,0], [1,1,0,0],
                   [0,1,1,1], [1,0,1,1], [1,1,0,1], [1,1,1,0],
@@ -40,7 +51,7 @@ function draw047() {
         .attr('y1', 0)
         .attr('y2', wallBBox.height)
     svgDefs.append('g')
-        .attr("id", "uline")
+        .attr("id", "dline")
         .selectAll('line')
         .data([...Array(((wallBBox.height+panelWidth)/gridSpace/1.4)|0 + 1).keys()]).enter()
         .append('line')
@@ -49,7 +60,7 @@ function draw047() {
         .attr('y1', d=>d*gridSpace*1.414-panelWidth)
         .attr('y2', d=>d*gridSpace*1.414)
     svgDefs.append('g')
-        .attr("id", "dline")
+        .attr("id", "uline")
         .selectAll('line')
         .data([...Array(((wallBBox.height+panelWidth)/gridSpace/1.4)|0 + 1).keys()]).enter()
         .append('line')
@@ -72,6 +83,7 @@ function draw047() {
                 .style("stroke", "#000")
         }
     }
+    d3.select("svg").attr("filter", "url(#myFilter)")
 
 }
 
