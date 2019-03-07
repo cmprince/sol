@@ -18,22 +18,22 @@ function draw047() {
                   [0,1,1,1], [1,0,1,1], [1,1,0,1], [1,1,1,0],
                   [1,1,1,1]]
     const panelWidth = wallBBox.width/15
-    const gridSpace = 3
+    const gridSpace = 8
 
     const svgDefs = svg.append("defs")
     svgDefs.append('g')
         .attr("id", "hline")
         .selectAll('line')
-        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .data([...Array((wallBBox.height/gridSpace)|0 + 1).keys()]).enter()
         .append('line')
         .attr('x1', 0)
-        .attr('x2', wallBBox.width)
+        .attr('x2', panelWidth)
         .attr('y1', d=>d*gridSpace)
         .attr('y2', d=>d*gridSpace)
     svgDefs.append('g')
         .attr("id", "vline")
         .selectAll('line')
-        .data([...Array((wallBBox.width/gridSpace)|0 + 10).keys()]).enter()
+        .data([...Array((panelWidth/gridSpace)|0 + 1).keys()]).enter()
         .append('line')
         .attr('x1', d=>d*gridSpace)
         .attr('x2', d=>d*gridSpace)
@@ -42,42 +42,33 @@ function draw047() {
     svgDefs.append('g')
         .attr("id", "uline")
         .selectAll('line')
-        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .data([...Array(((wallBBox.height+panelWidth)/gridSpace/1.4)|0 + 1).keys()]).enter()
         .append('line')
         .attr('x1', 0)
-        .attr('x2', d=>d*gridSpace*1.414)
-        .attr('y1', d=>d*gridSpace*1.414)
-        .attr('y2', 0)
+        .attr('x2', panelWidth) //d=>d*gridSpace*1.414)
+        .attr('y1', d=>d*gridSpace*1.414-panelWidth)
+        .attr('y2', d=>d*gridSpace*1.414)
     svgDefs.append('g')
         .attr("id", "dline")
         .selectAll('line')
-        .data([...Array((wallBBox.height/gridSpace)|0 + 10).keys()]).enter()
+        .data([...Array(((wallBBox.height+panelWidth)/gridSpace/1.4)|0 + 1).keys()]).enter()
         .append('line')
         .attr('x1', 0)
         .attr('x2', panelWidth)
-        .attr('y1', d=>d*gridSpace*1.414-panelWidth)
-        .attr('y2', d=>d*gridSpace*1.414)
+        .attr('y1', d=>d*gridSpace*1.414)
+        .attr('y2', d=>d*gridSpace*1.414-panelWidth)
 
     const orients = ["#dline", "#uline", "#vline", "#hline"]
 
     for (i = 0; i<15; i++){
-        svgDefs.append("clipPath")
-            .attr("id", "clip_" + i)
-            .append('rect')
-            .attr('x', panelWidth * i)
-            .attr('y', 0)
-            .attr('width', panelWidth)
-            .attr('height', wallBBox.height)
-
         let panelLines = data[i]
 
         for (j=0; j<4; j++){
             svg.append('g')
-                .attr("clip-path", "url(#clip_" + i +")")
                 .append("use")
                 .attr("xlink:href", orients[j])
                 .attr("transform", "translate(" + panelWidth*i + ")")
-                .style("stroke-width", panelLines[j]*0.3)
+                .style("stroke-width", panelLines[j]*0.8)
                 .style("stroke", "#000")
         }
     }
